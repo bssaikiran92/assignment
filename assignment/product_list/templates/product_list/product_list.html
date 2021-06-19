@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if request.user.is_authenticated %}
+    <p>{{request.user}}</p>
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+    <hr>
+    <h1>My product list</h1>
+    <h1><a href="{% url 'product-create' %}">Add task</a></h1>
+    <table>
+        <tr>
+            <h1>Item</h1>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td> {{ product.title }}</td>
+            <td> <a href ="{% url 'product' product.id %}">view</a></td>
+            <td> <a href ="{% url 'product-update' product.id %}">edit</a></td>
+            <td> <a href ="{% url 'product-delete' product.id %}">delete</a></td>
+        </tr>
+        {% empty %}
+        <h3>No products found</h3>
+        {% endfor %}
+
+    </table>
+</body>
+</html>
