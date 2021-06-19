@@ -1,0 +1,18 @@
+{% extends 'product_list/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <h2><a href = "{% url 'products' %}">&#8592; Backk</a></h2>
+</div>
+
+
+<div class="products-body">
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure you want to delete this product? "{{product}}"</p>
+        <input class="button" type="submit" value="Delete">
+    </form>
+</div>
+
+
+{% endblock content %}
