@@ -1,37 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'product_list/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <div>
+        <h1>Hello {{request.user|title}}</h1>
+        <h3 style="margin:0">Product{{ count|pluralize:"s" }} available: <b>{{count}}</b></h3>
+    </div>
+
     {% if request.user.is_authenticated %}
-    <p>{{request.user}}</p>
     <a href="{% url 'logout' %}">Logout</a>
     {% else %}
     <a href="{% url 'login' %}">Login</a>
     {% endif %}
-    <hr>
-    <h1>My product list</h1>
-    <h1><a href="{% url 'product-create' %}">Add task</a></h1>
-    <table>
-        <tr>
-            <h1>Item</h1>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-        {% for product in products %}
-        <tr>
-            <td> {{ product.title }}</td>
-            <td> <a href ="{% url 'product' product.id %}">view</a></td>
-            <td> <a href ="{% url 'product-update' product.id %}">edit</a></td>
-            <td> <a href ="{% url 'product-delete' product.id %}">delete</a></td>
-        </tr>
-        {% empty %}
-        <h3>No products found</h3>
-        {% endfor %}
 
-    </table>
-</body>
-</html>
+</div>
+
+<div id="search-add-wrapper">
+    <form method="GET" style="display: flex;">
+        <input type='text' name='search-area' placeholder="Search products" >
+        <input class="button" type="submit" value='Search'>
+    </form>
+    {% if products|length > 0 %}
+    <a id="add-link" href="{% url 'product-create' %}">&#x2b;</a>
+    {% endif %}
+</div>
+
+<div class="product-items-wrapper">
+    {% for product in products %}
+    <div class="product-wrapper" >
+        <div class="product-title">
+            <div class="product-icon"></div>
+            <a href="{% url 'product-update' product.id %}">{{product}}</a>
+        </div>
+        <a class="delete-link" href="{% url 'product-delete' product.id %}">&#215;</a>
+    </div>
+
+    {% empty %}
+    <div style="text-align: center; padding-bottom: 10px; line-height: 1em;">
+        <h3>No new tasks are created.</h3>
+        <h3><a style="text-decoration: none; color: #e53935;" href="{% url 'product-create' %}">Add a new product</a> ! </h3>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}
